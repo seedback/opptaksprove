@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Shuffle Game</title>
+
+		<style>
+			div {
+				color: blue;
+				background-color: lightblue;
+				padding: 10px;
+				margin: 10px;
+				border: solid green 2px;
+				width: 30px;
+				height: 30px;
+				float: left;
+			}
+			div.firstOnLine {
+				clear: left;
+			}
+			div.win {
+				color: black;
+				background-color: green;
+				font-size: 30px;
+				border: solid yellow 2px;
+				width: 180px;
+				clear: left;
+				display: none;
+			}
+		</style>
+	</head>
+
+
+	<body>
+		<div id="0" class="firstOnLine" onclick="pressed(this)">1</div>
+		<div id="1" onclick="pressed(this)">2</div>
+		<div id="2" onclick="pressed(this)">3</div>
+
+		<div id="3" class="firstOnLine" onclick="pressed(this)">4</div>
+		<div id="4" onclick="pressed(this)">5</div>
+		<div id="5" onclick="pressed(this)">6</div>
+
+		<div id="6" class="firstOnLine" onclick="pressed(this)">7</div>
+		<div id="7" onclick="pressed(this)"></div>
+		<div id="8" onclick="pressed(this)">8</div>
+		
+		<div id='win' class='win'>Du Vant!</div>
+
+		<script>
+			function pressed(tagElement) {
+				var buttons = [
+					[document.getElementById('0'), document.getElementById('1'), document.getElementById('2')],
+					[document.getElementById('3'), document.getElementById('4'), document.getElementById('5')],
+					[document.getElementById('6'), document.getElementById('7'), document.getElementById('8')]
+				];
+
+				var pressedTileCoords = [parseInt(parseInt(tagElement.getAttribute('id')) / 3),
+								parseInt(tagElement.getAttribute('id')) % 3]
+				
+				var blankTileCoords;
+				loop1: for (let x = 0; x < buttons.length; x++) {
+					for (let y = 0; y < buttons[x].length; y++) {
+						if (buttons[x][y].innerHTML === ''){
+							blankTileCoords = [x, y];
+							break loop1;
+						}
+					}
+				}
+
+				if(			(pressedTileCoords[0] === blankTileCoords[0] - 1 && pressedTileCoords[1] === blankTileCoords[1])     ||
+								(pressedTileCoords[0] === blankTileCoords[0] + 1 && pressedTileCoords[1] === blankTileCoords[1]) 		 ||
+								(pressedTileCoords[0] === blankTileCoords[0] 		 && pressedTileCoords[1] === blankTileCoords[1] - 1) ||
+								(pressedTileCoords[0] === blankTileCoords[0] 		 && pressedTileCoords[1] === blankTileCoords[1] + 1)){
+					var temp = document.getElementById(pressedTileCoords[0] * 3 + pressedTileCoords[1]).innerHTML;
+					document.getElementById(blankTileCoords[0] * 3 + blankTileCoords[1]).innerHTML = temp;
+					document.getElementById(pressedTileCoords[0] * 3 + pressedTileCoords[1]).innerHTML = '';
+				}
+
+				if (		document.getElementById('0').innerHTML === '1' &&
+								document.getElementById('1').innerHTML === '2' &&
+								document.getElementById('2').innerHTML === '3' &&
+								document.getElementById('3').innerHTML === '4' &&
+								document.getElementById('4').innerHTML === '5' &&
+								document.getElementById('5').innerHTML === '6' &&
+								document.getElementById('6').innerHTML === '7' &&
+								document.getElementById('7').innerHTML === '8' &&
+								document.getElementById('8').innerHTML === ''){
+					document.getElementById('win').style.display = "block";
+				}
+				else{
+					document.getElementById('win').style.display = "none";
+				}
+			}
+		</script>
+
+	</body>
+</html>
